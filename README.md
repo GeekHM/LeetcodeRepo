@@ -1,0 +1,2 @@
+# LeetcodeRepo
+Individual learning project
