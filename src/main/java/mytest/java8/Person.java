@@ -60,4 +60,15 @@ public class Person {
     public void setArea(String area) {
         this.area = area;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", salary=" + salary +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", area='" + area + '\'' +
+                '}';
+    }
 }

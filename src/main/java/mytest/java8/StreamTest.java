@@ -39,6 +39,7 @@ public class StreamTest {
             }
         });
         lists.stream().map((Function<List<String>, List<String>>) s -> null);
-        list.stream().map(s -> null);
+        list.stream().map(s -> null).collect(Collectors.toCollection(HashSet::new));
+
     }
 }
