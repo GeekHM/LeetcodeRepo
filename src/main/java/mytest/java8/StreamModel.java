@@ -249,6 +249,13 @@ public class StreamModel {
                 return p2.getSalary() - p1.getSalary();
             }
         }).map(Person::getName).collect(Collectors.toList());
+//        personList.stream().sorted(new Comparator<Person>() {
+//            @Override
+//            public int compare(Person o1, Person o2) {
+//                return 0;
+//            }
+//        })
+
     }
 
     /**
