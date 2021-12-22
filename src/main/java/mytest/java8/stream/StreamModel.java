@@ -1,9 +1,10 @@
-package mytest.java8;
+package mytest.java8.stream;
 
+import javafx.util.Pair;
+import mytest.java8.stream.DemoModel.Person;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -179,6 +180,15 @@ public class StreamModel {
         Map<String, List<Person>> group = personList.stream().collect(Collectors.groupingBy(Person::getSex));
         // 将员工先按性别分组，再按地区分组
         Map<String, Map<String, List<Person>>> group2 = personList.stream().collect(Collectors.groupingBy(Person::getSex, Collectors.groupingBy(Person::getArea)));
+
+        Map<String, Set<ArrayList<Object>>> group3 = personList.stream().collect(Collectors.groupingBy(Person::getName, Collectors.mapping(person -> {
+            ArrayList<Object> list = new ArrayList<>();
+            list.add(person.getSex());
+            list.add(person.getArea());
+            return list;
+        }, Collectors.toSet())));
+
+        TreeMap<String, Set<Pair<String, String>>> group4 = personList.stream().collect(Collectors.groupingBy(Person::getName, TreeMap::new, Collectors.mapping(person -> new Pair<>(person.getArea(), person.getSex()), Collectors.toSet())));
     }
 
     /**

@@ -1,6 +1,4 @@
-package mytest.fanxin;
-
-import java.util.Comparator;
+package mytest.fanxin.model;
 
 /**
  * @description

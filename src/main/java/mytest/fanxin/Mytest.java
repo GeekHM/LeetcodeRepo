@@ -1,10 +1,11 @@
 package mytest.fanxin;
 
+import mytest.fanxin.model.Animal;
+import mytest.fanxin.model.Cat;
+import mytest.fanxin.model.MiniCat;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeSet;
 
 /**
  * @description
@@ -48,4 +49,6 @@ public class Mytest {
         cats.add(new MiniCat());
 //        cats.add(new Animal());//报错
     }
+
+
 }

@@ -1,12 +1,14 @@
-package mytest.java8;
+package mytest.java8.stream;
 
 import javafx.util.Pair;
+import mytest.java8.stream.DemoModel.Person;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * @description
@@ -41,6 +43,9 @@ public class StreamDemo {
     public void test2() {
         Optional<Person> max2 = personList.stream().collect(Collectors.maxBy(Comparator.comparingInt(Person::getSalary)));
         Optional<Person> max = personList.stream().max(Comparator.comparingInt(Person::getSalary));
+        OptionalDouble average = personList.stream().mapToDouble(Person::getSalary).average();
+        int sum = personList.stream().mapToInt(Person::getSalary).sum();
+        Optional<Integer> reduce = personList.stream().map(Person::getSalary).reduce(Integer::sum);
     }
 
     /**
@@ -125,22 +130,5 @@ public class StreamDemo {
 
         System.out.println("工资之和：" + sumSalary.get() + "," + sumSalary2 + "," + sumSalary3);
         System.out.println("最高工资：" + maxSalary + "," + maxSalary2);
-    }
-
-    @Test
-    public void testBigDecimal() {
-        BigDecimal bg1 = new BigDecimal(1);
-        BigDecimal bg2 = new BigDecimal(2);
-        BigDecimal bg3 = new BigDecimal(3);
-        BigDecimal bg4 = new BigDecimal(4);
-        BigDecimal bg5 = new BigDecimal(5);
-        ArrayList<BigDecimal> bglist = new ArrayList<>();
-        bglist.add(bg1);
-        bglist.add(bg2);
-        bglist.add(bg3);
-        bglist.add(bg4);
-        bglist.add(bg5);
-        Optional<BigDecimal> reduce = bglist.stream().reduce(BigDecimal::add);
-
     }
 }

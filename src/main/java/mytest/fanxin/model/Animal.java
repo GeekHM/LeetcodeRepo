@@ -1,35 +1,31 @@
-package mytest.fanxin;
+package mytest.fanxin.model;
 
 /**
  * @description
  * @author: wanghaoming
  * @create: 2021-11-05 10:09
  **/
-public class MiniCat extends Cat {
+public class Animal {
     private String name;
 
-    public MiniCat() {
-
+    public Animal() {
     }
 
-    public MiniCat(String name, String name1, String name2) {
-        super(name, name1);
-        this.name = name2;
+    public Animal(String name) {
+        this.name = name;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "MiniCat{" +
+        return "Animal{" +
                 "name='" + name + '\'' +
                 '}';
     }
