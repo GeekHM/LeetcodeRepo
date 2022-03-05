@@ -17,17 +17,18 @@ import java.util.Calendar;
 /**
  * 默认严格按照ISO 8601规定的日期和时间格式进行打印；注意ISO 8601规定的日期和时间分隔符是T
  * DateTimeFormatter自定义输出的格式
- * LocalDateTime提供了对日期和时间进行加减的非常简单的链式调用
+ * LocalDateTime提供了对日期和时间进行加减的非常简单的链式调用sad
  * 对日期和时间进行调整则使用withXxx()方法
  * LocalDateTime还有一个通用的with()方法允许我们做更复杂的运算
  * 要判断两个LocalDateTime的先后，可以使用isBefore()、isAfter()方法，对于LocalDate和LocalTime类似
- * Duration表示两个时刻之间的时间间隔。另一个类似的Period表示两个日期之间的天数
+ * Duration表示两个时刻之间的时间间隔。另一个类似的Period表示两个日期之间的天数cxvxcvwwww
  */
 public class LocalDateTimeTest {
     //获取到明天的时间
     @Test
     public void getNowToNextDaySeconds() {
         Calendar cal = Calendar.getInstance();
+        int a;
         cal.add(Calendar.DAY_OF_YEAR, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.SECOND, 0);

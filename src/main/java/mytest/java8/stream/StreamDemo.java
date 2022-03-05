@@ -44,6 +44,7 @@ public class StreamDemo {
         Optional<Person> max2 = personList.stream().collect(Collectors.maxBy(Comparator.comparingInt(Person::getSalary)));
         Optional<Person> max = personList.stream().max(Comparator.comparingInt(Person::getSalary));
         OptionalDouble average = personList.stream().mapToDouble(Person::getSalary).average();
+        Double ave = personList.stream().collect(Collectors.averagingDouble(Person::getSalary));
         int sum = personList.stream().mapToInt(Person::getSalary).sum();
         Optional<Integer> reduce = personList.stream().map(Person::getSalary).reduce(Integer::sum);
     }
@@ -56,6 +57,12 @@ public class StreamDemo {
         List<Person> list = personList.stream()
                 .sorted((o1, o2) -> o1.getSalary() == o2.getSalary() ? o1.getAge() - o2.getAge() : o2.getSalary() - o1.getSalary())
                 .collect(Collectors.toList());
+
+        //自然排序是从小到到
+        List<Person> list2 = personList.stream()
+                .sorted(Comparator.comparing(Person::getSalary).reversed())
+                .collect(Collectors.toList());
+
         list.forEach(System.out::println);
     }
 
@@ -67,7 +74,7 @@ public class StreamDemo {
         //按性别分
         Map<String, List<Person>> map1 = personList.stream().collect(Collectors.groupingBy(Person::getSex));
         //按性别:数量来分
-        personList.stream().collect(Collectors.groupingBy(Person::getSex, Collectors.counting())).forEach((s, aLong) -> System.out.println(s + " " + aLong));
+        Map<String, Long> map2 = personList.stream().collect(Collectors.groupingBy(Person::getSex, Collectors.counting()));
         //先按薪水分一个集合，分完后再按年龄分一个集合
         Map<Object, Map<Object, List<Person>>> map = personList.stream().collect(Collectors.groupingBy(person -> person.getSalary() > 8000, Collectors.groupingBy(person -> person.getAge() > 15)));
         //先按性别分一个集合，分完后再按区域分一个集合
@@ -116,6 +123,7 @@ public class StreamDemo {
         // 求工资之和方式1：
         Optional<Integer> sumSalary = personList.stream().map(Person::getSalary).reduce(Integer::sum);
         // 求工资之和方式2：
+        //reduce中:一个参数就是普通累加，两个参数是有起始值的累加，三个参数下第三个入参表示多线程情况下的累加
         Integer sumSalary2 = personList.stream().reduce(0, (sum, p) -> sum += p.getSalary(),
                 (sum1, sum2) -> sum1 + sum2);
         // 求工资之和方式3：
@@ -127,6 +135,11 @@ public class StreamDemo {
         // 求最高工资方式2：
         Integer maxSalary2 = personList.stream().reduce(0, (max, p) -> max > p.getSalary() ? max : p.getSalary(),
                 (max1, max2) -> max1 > max2 ? max1 : max2);
+
+        //求工资最高的那个人
+        Optional<Person> maxPerson = personList.stream().reduce((person, person2) -> {
+            return Integer.compare(person.getSalary(), person2.getSalary()) > 0 ? person : person2;
+        });
 
         System.out.println("工资之和：" + sumSalary.get() + "," + sumSalary2 + "," + sumSalary3);
         System.out.println("最高工资：" + maxSalary + "," + maxSalary2);

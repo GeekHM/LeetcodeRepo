@@ -5,6 +5,8 @@ import mytest.java8.stream.DemoModel.Person;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -77,23 +79,19 @@ public class StreamModel {
         long count = list.stream().count();
     }
 
-
     /**
      * Stream的映射(map/flatMap)
+     * map针对Stream<T>
+     * flatMap针对 Stream<Stream<T>>
      */
     @Test
     public void test5() {
         String[] strArr = {"abcd", "bcdd", "defde", "fTr"};
-        List<String> strList = Arrays.stream(strArr).map(String::toUpperCase).collect(Collectors.toList());
-
         List<String> list = Arrays.asList("m,k,l,a", "1,3,5,7");
-        List<String> listNew = list.stream().flatMap(s -> {
-            // 将每个元素转换成一个stream
-            String[] split = s.split(",");
-            Stream<String> s2 = Arrays.stream(split);
-            return s2;
-        }).collect(Collectors.toList());
-//        list.stream().flatMap(s -> Arrays.stream(s.split(","))).forEach(System.out::println);
+
+        Stream<String> stream = Arrays.stream(strArr);
+        Stream<String[]> stream1 = list.stream().map(s -> s.split(","));
+        Stream<String> stringStream2 = list.stream().flatMap(s -> Arrays.stream(s.split(",")));
     }
 
     /**
@@ -117,22 +115,28 @@ public class StreamModel {
     }
 
     /**
-     * Stream的收集(collect)
+     * Stream的收集(collect) 转集合与mapping 和 collectingAndThen
      */
     @Test
     public void test7() {
-        List<Integer> list = Arrays.asList(1, 6, 3, 4, 6, 7, 9, 6, 20);
-        List<Integer> listNew = list.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
-        Set<Integer> set = list.stream().filter(x -> x % 2 == 0).collect(Collectors.toSet());
-
         List<Person> personList = new ArrayList<>();
         personList.add(new Person("Tom", 8900, 23, "male", "New York"));
         personList.add(new Person("Jack", 7000, 25, "male", "Washington"));
         personList.add(new Person("Lily", 7800, 21, "female", "Washington"));
         personList.add(new Person("Anni", 8200, 24, "female", "New York"));
 
-        Map<?, Person> map = personList.stream().filter(p -> p.getSalary() > 8000)
-                .collect(Collectors.toMap(Person::getName, person -> person));
+        //以集合方式收集
+        personList.stream().collect(Collectors.toList());
+        personList.stream().collect(Collectors.toSet());
+        personList.stream().collect(Collectors.toMap(Person::getName, person -> person));
+        personList.stream().collect(Collectors.toCollection(HashSet::new));
+
+        //mapping是做fun的函数操作，再collect起来
+        personList.stream().collect(Collectors.mapping(Person::getArea, Collectors.toList()));
+        //collectingAndThen是先collect起来，再做函数操作
+        personList.stream().collect(Collectors.collectingAndThen(Collectors.toList(), HashSet::new));
+        personList.stream().collect(Collectors.collectingAndThen(Collectors.toList(), Collection::stream));
+        personList.stream().collect(Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0)));
     }
 
     /**
@@ -227,7 +231,6 @@ public class StreamModel {
         System.out.println("员工薪资总和：" + sum2.get());
     }
 
-
     /**
      * Stream的排序(sorted)
      */
@@ -239,7 +242,7 @@ public class StreamModel {
         personList.add(new Person("Tom", 8900, 22, "male", "Washington"));
         personList.add(new Person("Jack", 9000, 25, "male", "Washington"));
         personList.add(new Person("Lily", 8800, 26, "male", "New York"));
-        personList.add(new Person("Alisa", 9000, 26, "female", "New York"));
+        personList.add(new Person("Alisa", null, 26, "female", "New York"));
 
         // 按工资升序排序（自然排序）
         List<String> newList = personList.stream().sorted(Comparator.comparing(Person::getSalary)).map(Person::getName)
@@ -259,13 +262,12 @@ public class StreamModel {
                 return p2.getSalary() - p1.getSalary();
             }
         }).map(Person::getName).collect(Collectors.toList());
-//        personList.stream().sorted(new Comparator<Person>() {
-//            @Override
-//            public int compare(Person o1, Person o2) {
-//                return 0;
-//            }
-//        })
 
+        //按工资降序、按年龄降序
+        List<Person> res = personList.stream().sorted(Comparator.comparing(Person::getSalary).reversed().thenComparing(Person::getAge, Comparator.reverseOrder())).collect(Collectors.toList());
+
+        List<Person> list = personList.stream().sorted(Comparator.comparing(Person::getSalary, Integer::compareTo).thenComparing(Comparator.nullsLast((o1, o2) -> o1.getName().compareTo(o2.getName())))).collect(Collectors.toList());
+        System.out.println(list);
     }
 
     /**
@@ -284,5 +286,21 @@ public class StreamModel {
         List<Integer> collect = Stream.iterate(1, x -> x + 2).limit(10).collect(Collectors.toList());
         // skip：跳过前n个数据
         List<Integer> collect2 = Stream.iterate(1, x -> x + 2).skip(1).limit(5).collect(Collectors.toList());
+    }
+
+    /**
+     * 自定义函数
+     */
+    @Test
+    public void test14() {
+        String[] strArr = {"abcd", "bcdd", "defde", "fTr"};
+
+        Stream<String> stream = Arrays.stream(strArr);
+        Stream<String> res1 = stream.map(String::toLowerCase);
+        Stream<String> res2 = stream.map(StreamModel::toLowerCase);
+    }
+
+    public static String toLowerCase(String s) {
+        return s.toLowerCase();
     }
 }

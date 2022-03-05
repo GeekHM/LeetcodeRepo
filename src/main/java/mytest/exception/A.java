@@ -10,19 +10,30 @@ import org.junit.Test;
  **/
 public class A {
     @Test
-    public void test(){
+    public void test() {
         a();
     }
 
-    public void a() {
-        b();
+    public void a(){
+        try {
+            b();
+        } catch (Exception e) {
+            System.out.println("ssss");
+//            throw e;
+        } finally {
+            System.out.println("aaaa");
+        }
     }
 
-    public void b(){
-        c();
+    public void b() throws NullPointerException{
+        try {
+            c();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
-    public void c(){
-       int i = 1/0;
+    public void c() {
+        int i = 1 / 0;
     }
 }

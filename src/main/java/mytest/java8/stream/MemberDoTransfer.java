@@ -140,7 +140,7 @@ public class MemberDoTransfer {
 //        String res = personList.stream().filter(person -> person.getSalary() == 7000).map(Person::getSex).findFirst().orElse(null);
 
         //正确写法
-        Person res = personList.stream().filter(person -> person.getSalary() == 7000 && StringUtils.hasLength(person.getSex())).findFirst().orElse(null);
+        Person res = personList.stream().filter(person -> person.getSalary() == 7800 && StringUtils.hasLength(person.getSex())).findFirst().orElse(null);
         System.out.println(res);
     }
 }

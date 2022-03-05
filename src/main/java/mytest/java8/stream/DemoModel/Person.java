@@ -10,7 +10,7 @@ import java.util.Objects;
  **/
 public class Person {
     private String name;  // 姓名
-    private int salary; // 薪资
+    private Integer salary; // 薪资
     private int age; // 年龄
     private String sex; //性别
     private String area;  // 地区
@@ -19,7 +19,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(String name, int salary, int age, String sex, String area) {
+    public Person(String name, Integer salary, int age, String sex, String area) {
         this.name = name;
         this.salary = salary;
         this.age = age;
@@ -27,7 +27,7 @@ public class Person {
         this.area = area;
     }
 
-    public Person(String name, int salary, int age, String sex, String area, Map<String, Double> unitPrice) {
+    public Person(String name, Integer salary, int age, String sex, String area, Map<String, Double> unitPrice) {
         this.name = name;
         this.salary = salary;
         this.age = age;
@@ -44,11 +44,11 @@ public class Person {
         this.name = name;
     }
 
-    public int getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
     }
 

@@ -18,6 +18,7 @@ public class WrapperTest {
     @Test
     public void test() {
         Wrapper<Double> wrapper = new Wrapper<>();
-        Wrapper.success();
+        Wrapper<Object> success = Wrapper.success();
+        Wrapper<String> aaa = Wrapper.success("aaa");
     }
 }
